@@ -1,7 +1,9 @@
 package one.digitalinovation.laboojava.entidade;
 
 /**
- * Classe que representa a abstração dos produtos que podem ser vendidos pela loja.
+ * Classe que representa a abstração dos produtos que podem ser vendidos pela
+ * loja.
+ * 
  * @author thiago leite
  */
 public abstract class Produto {
@@ -21,7 +23,8 @@ public abstract class Produto {
      */
     private int quantidade;
 
-    public Produto() {}
+    public Produto() {
+    }
 
     public String getCodigo() {
         return codigo;
@@ -47,10 +50,7 @@ public abstract class Produto {
         this.quantidade = quantidade;
     }
 
-    /**
-     * Calcula o preço do frete para os produtos comprados. Este cálculo pode
-     * variar de acordo com o produto
-     * @return valor do frete para o determinado produto
-     */
-    //TODO Método de cálculo de frete
+    public abstract double calcularFrete();
+
+    
 }

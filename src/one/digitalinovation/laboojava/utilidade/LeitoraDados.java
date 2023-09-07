@@ -3,9 +3,11 @@ package one.digitalinovation.laboojava.utilidade;
 import one.digitalinovation.laboojava.basedados.Banco;
 import one.digitalinovation.laboojava.entidade.Pedido;
 import one.digitalinovation.laboojava.entidade.Livro;
+import one.digitalinovation.laboojava.entidade.Caderno;
 import one.digitalinovation.laboojava.entidade.Produto;
 import one.digitalinovation.laboojava.entidade.Cupom;
 import one.digitalinovation.laboojava.entidade.constantes.Genero;
+import one.digitalinovation.laboojava.entidade.constantes.Materias;
 import one.digitalinovation.laboojava.negocio.ProdutoNegocio;
 
 import java.util.Optional;
@@ -13,6 +15,7 @@ import java.util.Scanner;
 
 /**
  * Classe utilitária para auxiliar na leitura de entradas de dados via teclado.
+ * 
  * @author thiago leite
  */
 public final class LeitoraDados {
@@ -21,24 +24,26 @@ public final class LeitoraDados {
 	 * Classe do Java para manipular entradas via teclado.
 	 */
 	private static Scanner scanner;
-	
+
 	static {
 		scanner = new Scanner(System.in);
 	}
 
 	/**
 	 * Ler um dado específico
+	 * 
 	 * @return Dado lido
 	 */
 	public static String lerDado() {
-		
+
 		String texto = scanner.nextLine();
-		
+
 		return texto;
 	}
 
 	/**
 	 * Ler os dados do livro a ser cadastrado.
+	 * 
 	 * @return Um livro a partir dos dados de entrada
 	 */
 	public static Livro lerLivro() {
@@ -63,12 +68,30 @@ public final class LeitoraDados {
 
 	/**
 	 * Ler os dados do caderno a ser cadastrado.
+	 * 
 	 * @return Um caderno a partir dos dados de entrada
 	 */
-	//TODO Método para ler o caderno
+	public static Caderno lerCaderno() {
+
+		System.out.println("Cadastrando Caderno...");
+		Caderno caderno = new Caderno();
+
+		System.out.println("Digite a quanditade de matérias M2, M5 ou M10");
+
+		String materia = lerDado().toUpperCase();
+		caderno.setTipo(materia);
+
+
+		System.out.println("Digite o preço(padrão 0.0)");
+		String preco = lerDado();
+		caderno.setPreco(Double.parseDouble(preco));
+
+		return caderno;
+	}
 
 	/**
 	 * Ler os dados do pedido e retorna um objeto a partir destes.
+	 * 
 	 * @return Um pedido a partir dos dados de entrada
 	 */
 	public static Pedido lerPedido(Banco banco) {
@@ -100,22 +123,24 @@ public final class LeitoraDados {
 
 			System.out.println("Deseja selecionar mais um produto? s/n");
 			opcao = lerDado();
-		} while("s".equals(opcao));
+		} while ("s".equals(opcao));
 
 		return pedido;
 	}
 
 	/**
 	 * Ler os dados do cupom e retorna um objeto a partir destes.
+	 * 
 	 * @return O cupom a partir dos dados de entrada
 	 */
 	public static Optional<Cupom> lerCupom(Banco banco) {
 
-		System.out.println("Caso queira utilizar algum cupom escolha entre: CUPOM2, CUPOM5, CUPOM7. Se não desejar, deixe em branco.");
+		System.out.println(
+				"Caso queira utilizar algum cupom escolha entre: CUPOM2, CUPOM5, CUPOM7. Se não desejar, deixe em branco.");
 
 		String desconto = lerDado();
 
-		for (Cupom cupom: banco.getCupons()) {
+		for (Cupom cupom : banco.getCupons()) {
 			if (cupom.getCodigo().equalsIgnoreCase(desconto)) {
 				return Optional.of(cupom);
 			}
