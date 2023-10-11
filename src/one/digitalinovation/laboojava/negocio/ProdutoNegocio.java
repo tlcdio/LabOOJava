@@ -36,7 +36,7 @@ public class ProdutoNegocio {
 
         boolean produtoRepetido = false;
         for (Produto produto: bancoDados.getProdutos()) {
-            if (produto.getCodigo() == novoProduto.getCodigo()) {
+            if (produto.getCodigo().equals(novoProduto.getCodigo())) {
                 produtoRepetido = true;
                 System.out.println("Produto já cadastrado.");
                 break;
@@ -52,9 +52,25 @@ public class ProdutoNegocio {
     /**
      * Exclui um produto pelo código de cadastro.
      * @param codigo Código de cadastro do produto
+     * @author Implementado por JhonKb
      */
     public void excluir(String codigo) {
-        //TODO Implementar a exclusão
+
+        boolean produtoExiste = false;
+        int i = 0;
+
+        for (Produto produto : bancoDados.getProdutos()) {
+            if (produto.getCodigo().equals(codigo)) {
+                produtoExiste = true;
+                bancoDados.removerProduto(i);
+                System.out.println("Produto excluído com sucesso.");
+                break;
+            }
+            i++;
+        }
+        if (!produtoExiste){
+            System.out.println("Produto inexistente.");
+        }
     }
 
     /**
