@@ -52,7 +52,7 @@ public class ProdutoNegocio {
     /**
      * Exclui um produto pelo código de cadastro.
      * @param codigo Código de cadastro do produto
-     * @author Implementado por JhonKb
+     * @author jhon klebson
      */
     public void excluir(String codigo) {
 
