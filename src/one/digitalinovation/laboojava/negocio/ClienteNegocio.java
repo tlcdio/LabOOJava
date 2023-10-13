@@ -77,10 +77,11 @@ public class ClienteNegocio {
      */
     public void excluirCliente(String cpf) {
 
-        Optional<Cliente> clienteExiste = consultar(cpf);
+        Optional<Cliente> clienteParaRemover = consultar(cpf);
 
-        if (clienteExiste.isPresent()) {
-            bancoDados.removerCliente(clienteExiste);
+        if (clienteParaRemover.isPresent()) {
+            Cliente cliente = clienteParaRemover.get();
+            bancoDados.removerCliente(cliente);
             System.out.println("Cliente excluído com sucesso.");
         }
         else {

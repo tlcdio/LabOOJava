@@ -80,7 +80,7 @@ public class Banco {
         produtos.add(produto);
     }
 
-    public void removerProduto(Optional<Produto> produto) {
+    public void removerProduto(Produto produto) {
         produtos.remove(produto);
     }
 
@@ -88,7 +88,7 @@ public class Banco {
         pedidos.add(pedido);
     }
 
-    public void removerPedido(Optional<Pedido> pedido) {
+    public void removerPedido(Pedido pedido) {
         pedidos.remove(pedido);
     }
 
@@ -96,7 +96,7 @@ public class Banco {
         clientes.add(cliente);
     }
 
-    public void removerCliente(Optional<Cliente> cliente) {
+    public void removerCliente(Cliente cliente) {
         clientes.remove(cliente);
     }
 }

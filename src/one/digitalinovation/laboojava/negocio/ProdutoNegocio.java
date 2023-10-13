@@ -51,9 +51,10 @@ public class ProdutoNegocio {
      */
     public void excluir(String codigo) {
 
-        Optional<Produto> existe = consultarCodigo(codigo);
-        if (existe.isPresent()) {
-            bancoDados.removerProduto(existe);
+        Optional<Produto> produtoParaRemover = consultarCodigo(codigo);
+        if (produtoParaRemover.isPresent()) {
+            Produto produto = produtoParaRemover.get();
+            bancoDados.removerProduto(produto);
             System.out.println("Produto excluído com sucesso.");
         }
         else {
@@ -113,6 +114,11 @@ public class ProdutoNegocio {
         }
     }
 
+    /**
+     * Lista todos os produtos cadastrados por tipo livro/caderno.
+     * @param tipo Tipo do produto a ser listado.
+     * @author jhon klebson
+     */
     public void listarProdutoTipo(Produto tipo) {
 
         if (bancoDados.getProdutos().length == 0) {

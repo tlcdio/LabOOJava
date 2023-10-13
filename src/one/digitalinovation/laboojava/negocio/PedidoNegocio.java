@@ -82,10 +82,11 @@ public class PedidoNegocio {
      */
     public void excluir(String codigo) {
 
-        Optional<Pedido> pedidoExiste = consultar(codigo);
+        Optional<Pedido> pedidoParaRemover = consultar(codigo);
 
-        if (pedidoExiste.isPresent()) {
-            bancoDados.removerPedido(pedidoExiste);
+        if (pedidoParaRemover.isPresent()) {
+            Pedido pedido = pedidoParaRemover.get();
+            bancoDados.removerPedido(pedido);
             System.out.println("Pedido excluído com sucesso.");
         }
         else {
@@ -113,6 +114,7 @@ public class PedidoNegocio {
      * Consulta o Pedido pelo código.
      * @param codigo Código de um pedido
      * @return O pedido que possuir o código passado.
+     * @author jhon klebson
      */
     public Optional<Pedido> consultar(String codigo) {
 
