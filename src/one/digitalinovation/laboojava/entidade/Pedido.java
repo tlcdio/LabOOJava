@@ -73,12 +73,12 @@ public class Pedido {
     public String getProdutosComprados() {
 
         StringBuilder produtos = new StringBuilder();
-        produtos.append("[");
+        produtos.append("\n[");
         for (Produto produto : getProdutos()) {
             produtos.append(produto.toString());
             produtos.append("Qtd:");
             produtos.append(produto.getQuantidade());
-            produtos.append(" ");
+            produtos.append("\n\n");
         }
         produtos.append("]");
 
@@ -91,10 +91,10 @@ public class Pedido {
      */
     public String toString() {
         return "Pedido{" +
-                "codigo='" + codigo + '\'' +
-                ", cliente=" + cliente +
-                ", produtos=" + getProdutosComprados() +
-                ", total=" + total +
-                '}';
+                "\ncodigo='" + codigo + '\'' +
+                ", \ncliente=" + cliente +
+                ", \nprodutos=" + getProdutosComprados() +
+                ", \ntotal=" + total +
+                "}\n";
     }
 }
