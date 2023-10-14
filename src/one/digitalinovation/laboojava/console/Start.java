@@ -76,8 +76,7 @@ public class Start {
                     produtoNegocio.salvar(livro);
                     break;
                 case "2":
-                    livro = new Livro();
-                    produtoNegocio.listarProdutoTipo(livro);
+                    produtoNegocio.listarProdutoTipo(new Livro());
                     System.out.println("Digite o código do livro");
                     String codigoLivro = LeitoraDados.lerDado();
                     produtoNegocio.excluir(codigoLivro);
@@ -90,8 +89,7 @@ public class Start {
                     produtoNegocio.salvar(caderno);
                     break;
                 case "5":
-                    caderno = new Caderno();
-                    produtoNegocio.listarProdutoTipo(caderno);
+                    produtoNegocio.listarProdutoTipo(new Caderno());
                     System.out.println("Digite o código do caderno");
                     String codigoCaderno = LeitoraDados.lerDado();
                     produtoNegocio.excluir(codigoCaderno);
