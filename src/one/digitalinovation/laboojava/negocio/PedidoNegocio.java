@@ -1,12 +1,14 @@
 package one.digitalinovation.laboojava.negocio;
 
 import one.digitalinovation.laboojava.basedados.Banco;
+import one.digitalinovation.laboojava.entidade.Cliente;
 import one.digitalinovation.laboojava.entidade.Cupom;
 import one.digitalinovation.laboojava.entidade.Pedido;
 import one.digitalinovation.laboojava.entidade.Produto;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Classe para manipular a entidade {@link Pedido}.
@@ -35,11 +37,10 @@ public class PedidoNegocio {
         }
 
         if (cupom != null) {
-            return  total * (1 - cupom.getDesconto());
+            return  total * (1 - (cupom.getDesconto()/100));
         } else {
             return  total;
         }
-
     }
 
     /**
@@ -57,15 +58,22 @@ public class PedidoNegocio {
      */
     public void salvar(Pedido novoPedido, Cupom cupom) {
 
-        //Definir padrão código
-        //Pegar data do dia corrente
-        //Formatar código
+        String codigo = "PE%4d%2d%04d";
+        LocalDate hoje = LocalDate.now();
+        codigo = String.format(codigo, hoje.getYear(), hoje.getMonthValue(), bancoDados.getPedidos().length);
 
         //Setar código no pedido
+        novoPedido.setCodigo(codigo);
+
         //Setar cliente no pedido
+        novoPedido.setCliente(bancoDados.getCliente());
+
         //Calcular e set total
+        novoPedido.setTotal(calcularTotal(novoPedido.getProdutos(), cupom));
+
         //Adicionar no banco
-        //Mensagem
+        bancoDados.adicionarPedido(novoPedido);
+        System.out.println("Pedido registrado com sucesso.");
     }
 
     /**
@@ -74,27 +82,49 @@ public class PedidoNegocio {
      */
     public void excluir(String codigo) {
 
-        int pedidoExclusao = -1;
-        for (int i = 0; i < bancoDados.getPedidos().length; i++) {
+        Optional<Pedido> pedidoParaRemover = consultar(codigo);
 
-            Pedido pedido = bancoDados.getPedidos()[i];
-            if (pedido.getCodigo().equals(codigo)) {
-                pedidoExclusao = i;
-                break;
-            }
-        }
-
-        if (pedidoExclusao != -1) {
-            bancoDados.removerPedido(pedidoExclusao);
+        if (pedidoParaRemover.isPresent()) {
+            Pedido pedido = pedidoParaRemover.get();
+            bancoDados.removerPedido(pedido);
             System.out.println("Pedido excluído com sucesso.");
-        } else {
+        }
+        else {
             System.out.println("Pedido inexistente.");
         }
     }
 
     /**
      * Lista todos os pedidos realizados.
+     * @author jhon klebson
      */
-    //TODO Método de listar todos os pedidos
+    public void listarTodos() {
 
+        if (bancoDados.getPedidos().length == 0) {
+            System.out.println("Não existem pedidos cadastrados");
+        } else {
+
+            for (Pedido pedido: bancoDados.getPedidos()) {
+                System.out.println("Pedido {codigo='" + pedido.getCodigo() + "'}");
+            }
+        }
+    }
+
+    /**
+     * Consulta o Pedido pelo código.
+     * @param codigo Código de um pedido
+     * @return O pedido que possuir o código passado.
+     * @author jhon klebson
+     */
+    public Optional<Pedido> consultar(String codigo) {
+
+        for (Pedido pedido: bancoDados.getPedidos()) {
+
+            if (pedido.getCodigo().equalsIgnoreCase(codigo)) {
+                System.out.println(pedido);
+                return  Optional.of(pedido);
+            }
+        }
+        return Optional.empty();
+    }
 }

@@ -2,6 +2,8 @@ package one.digitalinovation.laboojava.entidade;
 
 import one.digitalinovation.laboojava.entidade.constantes.Genero;
 
+import java.util.Objects;
+
 /**
  * Classe que representa um livro, qual é uma especialização de um produto da loja.
  * @author thiago leite
@@ -45,10 +47,27 @@ public class Livro extends Produto {
     @Override
     public String toString() {
         return "Livro{" +
-                "nome='" + nome + '\'' +
-                ", genero=" + genero + '\'' +
-                ", codigo='" + getCodigo() + '\'' +
-                ", preço='" + getPreco() + '\'' +
-                '}';
+                "\nnome='" + nome + '\'' +
+                ", \ngenero=" + genero + '\'' +
+                ", \ncodigo='" + getCodigo() + '\'' +
+                ", \npreço='" + getPreco() + '\'' +
+                "}\n";
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null || getClass() != obj.getClass()) {
+            return false;
+        }
+        Livro livro = (Livro) obj;
+        return nome.equalsIgnoreCase(livro.nome);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(nome);
     }
 }

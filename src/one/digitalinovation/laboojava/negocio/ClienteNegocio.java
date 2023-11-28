@@ -21,7 +21,27 @@ public class ClienteNegocio {
      * @param banco Banco de dados para ter acesso aos clientes cadastrados
      */
     public ClienteNegocio(Banco banco) {
-        this.bancoDados = banco;
+        bancoDados = banco;
+    }
+
+    /**
+     * Procura o usuário na base de dados.
+     *
+     * @param cpf CPF do usuário que deseja logar na aplicação
+     */
+    public Cliente logarCliente(String cpf) {
+
+        Optional<Cliente> resultado = consultar(cpf);
+
+        if (resultado.isPresent()) {
+
+            Cliente cliente = resultado.get();
+            System.out.println(String.format("Olá %s! Você está logado.", cliente.getNome()));
+            return cliente;
+        } else {
+            System.out.println("Usuário não cadastrado.");
+            return null;
+        }
     }
 
     /**
@@ -31,23 +51,42 @@ public class ClienteNegocio {
      */
     public Optional<Cliente> consultar(String cpf) {
 
-        if (bancoDados.getCliente().getCpf().equals(cpf)) {
-            return Optional.of(bancoDados.getCliente());
-        } else {
-            return Optional.empty();
+        for (Cliente cliente: bancoDados.getClientes()) {
+
+            if (cliente.getCpf().equalsIgnoreCase(cpf)) {
+                return  Optional.of(cliente);
+            }
         }
+        return Optional.empty();
     }
 
     /**
      * Cadastra um novo cliente.
      * @param cliente Novo cliente que terá acesso a aplicação
+     * @author jhon klebson
      */
-    //TODO Fazer a inclusão de cliente
+    public void cadastrarCliente(Cliente cliente) {
+        bancoDados.adicionarCliente(cliente);
+        System.out.println("Cliente cadastrado com sucesso.");
+    }
 
     /**
      * Exclui um cliente específico.
      * @param cpf CPF do cliente
+     * @author jhon klebson
      */
-    //TODO Fazer a exclusão de cliente
+    public void excluirCliente(String cpf) {
+
+        Optional<Cliente> clienteParaRemover = consultar(cpf);
+
+        if (clienteParaRemover.isPresent()) {
+            Cliente cliente = clienteParaRemover.get();
+            bancoDados.removerCliente(cliente);
+            System.out.println("Cliente excluído com sucesso.");
+        }
+        else {
+            System.out.println("Cliente inexistente.");
+        }
+    }
 
 }

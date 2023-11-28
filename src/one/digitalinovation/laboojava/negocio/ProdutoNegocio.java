@@ -30,31 +30,36 @@ public class ProdutoNegocio {
      */
     public void salvar(Produto novoProduto) {
 
-        String codigo = "PR%04d";
-        codigo = String.format(codigo, bancoDados.getProdutos().length);
-        novoProduto.setCodigo(codigo);
+        Optional<Produto> produtoRepetido = consultarProduto(novoProduto);
 
-        boolean produtoRepetido = false;
-        for (Produto produto: bancoDados.getProdutos()) {
-            if (produto.getCodigo() == novoProduto.getCodigo()) {
-                produtoRepetido = true;
-                System.out.println("Produto já cadastrado.");
-                break;
-            }
-        }
-
-        if (!produtoRepetido) {
-            this.bancoDados.adicionarProduto(novoProduto);
+        if (produtoRepetido.isEmpty()) {
+            String codigo = "PR%04d";
+            codigo = String.format(codigo, bancoDados.getProdutos().length);
+            novoProduto.setCodigo(codigo);
+            bancoDados.adicionarProduto(novoProduto);
             System.out.println("Produto cadastrado com sucesso.");
+        }
+        else {
+            System.out.println("Produto já cadastrado.");
         }
     }
 
     /**
      * Exclui um produto pelo código de cadastro.
      * @param codigo Código de cadastro do produto
+     * @author jhon klebson
      */
     public void excluir(String codigo) {
-        //TODO Implementar a exclusão
+
+        Optional<Produto> produtoParaRemover = consultarCodigo(codigo);
+        if (produtoParaRemover.isPresent()) {
+            Produto produto = produtoParaRemover.get();
+            bancoDados.removerProduto(produto);
+            System.out.println("Produto excluído com sucesso.");
+        }
+        else {
+            System.out.println("Produto inexistente.");
+        }
     }
 
     /**
@@ -62,7 +67,7 @@ public class ProdutoNegocio {
      * @param codigo Código de cadastro do produto
      * @return Optional indicando a existência ou não do Produto
      */
-    public Optional<Produto> consultar(String codigo) {
+    public Optional<Produto> consultarCodigo(String codigo) {
 
         for (Produto produto: bancoDados.getProdutos()) {
 
@@ -75,7 +80,27 @@ public class ProdutoNegocio {
     }
 
     /**
+     * Obtem um produto a partir de seu tipo livro/caderno.
+     * @param produtoConsultado Tipo de produto a ser consultado
+     * @return Optional indicando a existência ou não do Produto
+     * @author jhon klebson
+     */
+    public Optional<Produto> consultarProduto(Produto produtoConsultado) {
+
+        for (Produto produto: bancoDados.getProdutos()) {
+
+            if (produto.equals(produtoConsultado)) {
+                System.out.println(produto);
+                return  Optional.of(produtoConsultado);
+            }
+        }
+
+        return Optional.empty();
+    }
+
+    /**
      * Lista todos os produtos cadastrados.
+     * @author jhon klebson
      */
     public void listarTodos() {
 
@@ -85,6 +110,25 @@ public class ProdutoNegocio {
 
             for (Produto produto: bancoDados.getProdutos()) {
                 System.out.println(produto.toString());
+            }
+        }
+    }
+
+    /**
+     * Lista todos os produtos cadastrados por tipo livro/caderno.
+     * @param tipo Tipo do produto a ser listado.
+     * @author jhon klebson
+     */
+    public void listarProdutoTipo(Produto tipo) {
+
+        if (bancoDados.getProdutos().length == 0) {
+            System.out.println("Não existem produtos cadastrados");
+        } else {
+
+            for (Produto produto: bancoDados.getProdutos()) {
+                if (produto.getClass().equals(tipo.getClass())) {
+                    System.out.println(produto);
+                }
             }
         }
     }

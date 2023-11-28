@@ -1,2 +1,4 @@
 # Project exclude paths
 /out/
+/.idea/vcs.xml
+/.idea/workspace.xml

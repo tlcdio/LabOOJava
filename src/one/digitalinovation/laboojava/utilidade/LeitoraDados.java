@@ -1,11 +1,9 @@
 package one.digitalinovation.laboojava.utilidade;
 
 import one.digitalinovation.laboojava.basedados.Banco;
-import one.digitalinovation.laboojava.entidade.Pedido;
-import one.digitalinovation.laboojava.entidade.Livro;
-import one.digitalinovation.laboojava.entidade.Produto;
-import one.digitalinovation.laboojava.entidade.Cupom;
+import one.digitalinovation.laboojava.entidade.*;
 import one.digitalinovation.laboojava.entidade.constantes.Genero;
+import one.digitalinovation.laboojava.entidade.constantes.Materias;
 import one.digitalinovation.laboojava.negocio.ProdutoNegocio;
 
 import java.util.Optional;
@@ -31,10 +29,8 @@ public final class LeitoraDados {
 	 * @return Dado lido
 	 */
 	public static String lerDado() {
-		
-		String texto = scanner.nextLine();
-		
-		return texto;
+
+		return scanner.nextLine();
 	}
 
 	/**
@@ -44,11 +40,7 @@ public final class LeitoraDados {
 	public static Livro lerLivro() {
 
 		System.out.println("Cadastrando livro...");
-		Livro livro = new Livro();
-
-		System.out.println("Digite o nome");
-		String nome = lerDado();
-		livro.setNome(nome);
+		Livro livro = lerLivroNome();
 
 		System.out.println("Digite o gênero: DRAMA, SUSPENSE, ROMANCE");
 		String genero = lerDado();
@@ -62,10 +54,56 @@ public final class LeitoraDados {
 	}
 
 	/**
+	 * Ler apenas o nome do livro.
+	 * @return Um livro a partir do nome.
+	 * @author jhon klebson
+	 */
+	public static Livro lerLivroNome() {
+
+		Livro livro = new Livro();
+
+		System.out.println("Digite o nome do livro");
+		String nome = lerDado();
+		livro.setNome(nome);
+
+		return livro;
+	}
+
+	/**
 	 * Ler os dados do caderno a ser cadastrado.
 	 * @return Um caderno a partir dos dados de entrada
+	 * @author jhon klebson
 	 */
-	//TODO Método para ler o caderno
+	public static Caderno lerCaderno() {
+
+		System.out.println("Cadastrando caderno...");
+		Caderno caderno = lerCadernoTipo();
+
+		System.out.println("Digite o preço(padrão 0.0)");
+		String preco = lerDado();
+		caderno.setPreco(Double.parseDouble(preco));
+
+		return caderno;
+	}
+
+	/**
+	 * Ler o tipo do caderno.
+	 * @return Um caderno a partir do seu tipo.
+	 * @author jhon klebson
+	 */
+	public static Caderno lerCadernoTipo() {
+
+		Caderno caderno = new Caderno();
+
+		System.out.println("Digite o tipo de caderno:");
+		System.out.println("M2 - 2 matérias");
+		System.out.println("M5 - 5 matérias");
+		System.out.println("M10 - 10 matérias");
+		String tipo = lerDado();
+		caderno.setTipo(Materias.valueOf(tipo.toUpperCase()));
+
+		return caderno;
+	}
 
 	/**
 	 * Ler os dados do pedido e retorna um objeto a partir destes.
@@ -80,11 +118,11 @@ public final class LeitoraDados {
 
 		String opcao = "s";
 		do {
-
+			produtoNegocio.listarTodos();
 			System.out.println("Digite o código do produto(livro/Caderno)");
 			String codigo = lerDado();
 
-			Optional<Produto> resultado = produtoNegocio.consultar(codigo);
+			Optional<Produto> resultado = produtoNegocio.consultarCodigo(codigo);
 			if (resultado.isPresent()) {
 
 				Produto produto = resultado.get();
@@ -122,6 +160,26 @@ public final class LeitoraDados {
 		}
 
 		return Optional.empty();
+	}
+
+	/**
+	 * Ler os dados de um cliente para cadastrar.
+	 * @param cpf CPF do cliente a ser cadastrado.
+	 * @return o cliente com os atributos setados.
+	 * @author jhon klebson
+	 */
+	public static Cliente lerCliente(String cpf) {
+
+		System.out.println("Cadastrando cliente...");
+		Cliente cliente = new Cliente();
+
+		System.out.println("Digite o nome");
+		String nome = lerDado();
+		cliente.setNome(nome);
+
+		cliente.setCpf(cpf);
+
+		return cliente;
 	}
 
 }
